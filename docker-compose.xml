@@ -1,0 +1,43 @@
+version: "3.4"
+# 이미지와 네트워크 정보에 대한 base service를 지정
+x-datanode_base: &datanode_base
+  image: hadoop-datanode:2.9.2
+  networks:
+    - bridge
+services:
+  namenode:
+    image: hadoop-namenode:2.9.2
+    container_name: namenode
+    hostname: namenode
+    ports:
+      - 50070:50070
+            #- 9870:9870
+      - 9000:9000
+    volumes:
+      - /data/hadoop_data/name:/opt/hadoop/dfs/name
+      - /tmp:/tmp
+    networks:
+      - bridge
+  datanode01:
+    <<: *datanode_base
+    container_name: datanode01
+    hostname: datanode01
+    volumes:
+      - /data/hadoop_data/name:/opt/hadoop/dfs/data
+  datanode02:
+    <<: *datanode_base
+    container_name: datanode02
+    hostname: datanode02
+    volumes:
+      - /data/hadoop_data/name:/opt/hadoop/dfs/data
+  datanode03:
+    <<: *datanode_base
+    container_name: datanode03
+    hostname: datanode03
+    volumes:
+      - /data/hadoop_data/name:/opt/hadoop/dfs/data
+volumes:
+  namenode:
+  datanode01:
+  datanode02:
+  datanode03:
